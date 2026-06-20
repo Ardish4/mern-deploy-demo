@@ -1,0 +1,49 @@
+services:
+  client:
+    container_name: client
+    depends_on:
+      - server
+    build: ./client
+    ports:
+      - 5173:5173
+    environment:
+      - VITE_API_URL=http://localhost:3000
+    develop:
+      watch:
+        - path: ./client/package.json
+          action: rebuild
+        - path: ./client/package
+          action: rebuild
+        - path: ./client
+          target: /app
+          action: sync
+  
+  server:
+    container_name: server
+    depends_on:
+      - db
+    build: ./server
+    ports:
+      - 3000:3000
+    environment:
+      MONGO_URI: mongodb://db:27017
+    develop:
+      watch:
+        - path: ./server/package.json
+          action: rebuild
+        - path: ./server/package-lock.json
+          action: rebuild
+        - path: ./server
+          target: /app
+          action: sync
+  
+  db:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - vol1:/data/db
+
+volumes:
+  vol1:
