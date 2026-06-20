@@ -9,10 +9,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [20.x, 22.x, 24.x]
-
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -21,6 +17,7 @@ jobs:
         uses: appleboy/ssh-action@v1.2.5
         with:
           host: ${{ secrets.SSH_HOST }}
+          port: ${{ secrets.SSH_PORT || 22 }}
           username: ubuntu
           key: ${{ secrets.SSH_KEY }}
           script: |
