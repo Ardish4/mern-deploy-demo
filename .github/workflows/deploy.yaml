@@ -22,5 +22,5 @@ jobs:
           script: |
             cd /home/ubuntu/mern-deploy-demo
             git pull
-            docker compose down
-            docker compose up -d --build
+            docker compose up --build -d
+            docker system prune -a -f
